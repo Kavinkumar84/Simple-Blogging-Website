@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Blogging App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://th.bing.com/th/id/R.93b95738cb630f899bacf7dd835b5ad5?rik=tTYET5ChbtekCw&riu=http%3a%2f%2fyesofcorsa.com%2fwp-content%2fuploads%2f2016%2f11%2f4K-Wallpapers-7.jpg&ehk=T6iESUSfpf9rlqxhPxnOLZKKmedMu0oOGAuICEPY%2fbo%3d&risl=&pid=ImgRaw&r=0');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #postForm {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+    }
+    .user-info {
+  display: flex;
+  align-items: center;
+}
+
+    .delete-post-button {
+      
+      background-color: transparent;
+  margin-left: auto; /* This pushes the delete button to the left */
+  cursor: pointer;
+}
+.delete-post-button:hover.delete-post-button{
+  background-color: #e6c7e6;
+}
+    textarea {
+      width: 100%;
+      height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5292d6;
+    }
+
+    .message {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .message p {
+      margin: 0;
+    }
+
+    .message img {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+
+    .post-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .download-link,
+    .like-button,
+    .comment-button {
+      background-color: #007bff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .download-link:hover,
+    .like-button:hover,
+    .comment-button:hover {
+      background-color: #080808;
+    }
+
+    .like-button {
+      background-color: #eb0909;
+    }
+
+    .comment-button {
+      background-color: #4caf50;
+    }
+
+    .comment-form {
+      display: none;
+    }
+
+    .comment-form.active {
+      display: block;
+    }
+
+    .comment-input {
+      width: 100%;
+      height: 30px;
+      margin-top: 10px;
+    }
+
+    .comments {
+      margin-top: 10px;
+    }
+
+    .comment {
+      background-color: #f4f4f4;
+      padding: 5px;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+
+    .comment-date {
+      
+      font-size: 10px; /* Adjust the font size as needed */
+      color: #888; /* Adjust the color as needed */
+    }
+    .delete-comment-button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .profile-logo,
+    .profile-logo-small {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .user-name,
+    .user-name-small {
+      font-weight: bold;
+    }
+
+    /* Media query for responsive design */
+    @media screen and (max-width: 768px) {
+      .menu-icon {
+        top: 10px;
+        left: 10px;
+      }
+    }
+
+    /* New Styles for Profile Info */
+    .profile-info {
+      display: none;
+      align-items: center;
+      margin-bottom: 20px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .profile-logo-small {
+      width: 30px;
+      height: 30px;
+    }
+
+    .user-name-small {
+      color: #fff;
+      margin: 0;
+    }
+
+    .profile-info.active {
+      display: flex;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .dropdown {
+      float: right;
+      overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+      font-size: 16px;
+      border: none;
+      outline: none;
+      color: white;
+      background-color: inherit;
+      margin: 0;
+      padding: 14px 16px;
+    }
+
+    .topnav a:hover,
+    .dropdown:hover .dropbtn {
+      background-color: #dfa538;
+      color: black;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #06040600;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      float: none;
+      color: rgb(3, 3, 3);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #09c852;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+      background-color: #09dceb;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="topnav">
+    <div class="dropdown">
+      <button class="dropbtn">
+        <div class="profile-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Logo" class="profile-logo">
+          <span class="user-name">Kavin</span>
+        </div>
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <!-- <a href="#profile">My Profile</a> -->
+        <!-- <a href="#settings">Settings</a> -->
+        <div ><a href="Login.html">Logout</a></div>
+
+        <!-- <a href="#index2">Logout</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>Simple Blogging App</h1>
+    <form id="postForm">
+      <div class="form-group">
+        <label for="message">Write your message:</label>
+        <textarea id="message" class="form-control" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="image">Upload an image:</label>
+        <input type="file" id="image" class="form-control-file">
+      </div>
+      <button type="submit">Post</button>
+    </form>
+    <div id="messageContainer">
+      <!-- Messages will be displayed here -->
+    </div>
+  </div>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+  const emojis = ['😄', '❤️', '😍', '👍', '😂', '😊', '😎', '🥰', '😅', '🥳'];
+
+  function getCurrentDateTime() {
+    const now = new Date();
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    const formattedDate = now.toLocaleString('en-US', options);
+    return `<span class="comment-date">${formattedDate}</span>`;
+  }
+
+  document.getElementById('postForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const message = document.getElementById('message').value;
+    const image = document.getElementById('image').files[0];
+
+    if (message || image) {
+      const messageElement = document.createElement('div');
+      messageElement.className = 'message';
+      messageElement.innerHTML = `
+        <div class="user-info">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Logo" class="profile-logo">
+          <span class="user-name">Kavin</span>
+          <button class="delete-post-button">
+            🗑️
+          </button>
+        </div>
+        <p>${message}</p>
+        ${image ? `
+          <img src="${URL.createObjectURL(image)}" alt="Posted Image" />
+        ` : ''}
+        <div class="post-buttons">
+          <div class="like-comment-buttons">
+            <button class="like-button">Like <span class="like-count">0</span></button>
+            <button class="comment-button">Comment</button>
+          </div>
+          ${image ? `<a href="${URL.createObjectURL(image)}" class="download-link" download>Download</a>` : ''}
+        </div>
+        <div class="comment-form">
+          <input type="text" class="comment-input" placeholder="Add a comment">
+          <button class="comment-submit-button">Post</button>
+          <div class="emoji-options">
+            ${emojis.map(emoji => `<span class="emoji">${emoji}</span>`).join('')}
+          </div>
+        </div>
+        <div class="comments"></div>
+      `;
+      document.getElementById('messageContainer').appendChild(messageElement);
+
+      document.getElementById('message').value = '';
+      document.getElementById('image').value = '';
+    }
+  });
+
+  document.getElementById('messageContainer').addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('like-button')) {
+      const likeButton = e.target;
+      const likeCount = likeButton.querySelector('.like-count');
+
+      let currentLikes = parseInt(likeCount.textContent);
+      currentLikes = isNaN(currentLikes) ? 0 : currentLikes;
+      likeCount.textContent = currentLikes + 1;
+    }
+    if (e.target && e.target.classList.contains('comment-button')) {
+      const commentButton = e.target;
+      const messageDiv = commentButton.closest('.message');
+      const commentForm = messageDiv.querySelector('.comment-form');
+
+      commentForm.classList.toggle('active');
+    }
+    if (e.target && e.target.classList.contains('comment-submit-button')) {
+      const commentSubmitButton = e.target;
+      const commentInput = commentSubmitButton.previousElementSibling;
+      const comment = commentInput.value;
+      const messageDiv = commentSubmitButton.closest('.message');
+      const commentsDiv = messageDiv.querySelector('.comments');
+
+      if (comment) {
+        const commentElement = document.createElement('div');
+        commentElement.className = 'comment';
+        commentElement.innerHTML = `
+          <p>${comment}</p>
+          ${getCurrentDateTime()}
+          <button class="delete-comment-button">Delete</button>
+        `;
+
+        commentsDiv.appendChild(commentElement);
+        commentInput.value = '';
+      }
+    }
+    if (e.target && e.target.classList.contains('emoji')) {
+      const emoji = e.target.textContent;
+      const commentInput = e.target.closest('.comment-form').querySelector('.comment-input');
+      commentInput.value += emoji;
+    }
+    if (e.target && e.target.classList.contains('delete-comment-button')) {
+      const deleteButton = e.target;
+      const commentDiv = deleteButton.closest('.comment');
+      commentDiv.remove();
+    }
+    if (e.target && e.target.classList.contains('delete-post-button')) {
+      const deleteButton = e.target;
+      const postDiv = deleteButton.closest('.message');
+      postDiv.remove();
+    }
+  });
+</script>
+</body>
+</html>
