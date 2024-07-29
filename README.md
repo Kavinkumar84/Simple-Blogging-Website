@@ -20,11 +20,4 @@ You can check out the live demo of the blogging website here: [Blogging Website 
 - **CSS:** For styling the website and making it visually appealing.
 - **JavaScript:** For adding interactivity and dynamic content.
 
-## Getting Started
 
-To run this project locally, follow these steps:
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/yourusername/blogging-website.git
